@@ -1,0 +1,25 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "date": "29 DIC 2024",
+      "title": "El fin del alcance orgánico",
+      "excerpt": "Por qué tus posts ya no los ve nadie y cómo el formato Reel-Only está cambiando las reglas.",
+      "content": "Hace 5 años, publicabas una foto y el 20% de tus seguidores la veían. Hoy, con suerte llegas al 3%.\n\nNo es culpa del algoritmo, es un cambio en el comportamiento del usuario. La gente ya no entra a Instagram a ver qué hacen sus amigos, entra a **entretenerse**.\n\n### ¿La Solución?\nDejar de crear contenido 'informativo' aburrido y empezar a crear contenido nativo de retención. Si no captas la atención en los primeros 2 segundos (el gancho), estás muerto digitalmente."
+    },
+    {
+      "id": 2,
+      "date": "15 DIC 2024",
+      "title": "Automatiza o Muere",
+      "excerpt": "Herramientas No-Code que te ahorrarán 20 horas semanales de gestión manual.",
+      "content": "Si sigues respondiendo 'Precio al MD' manualmente en 2025, estás perdiendo dinero.\n\nLa velocidad de respuesta es el factor #1 de conversión hoy en día. Si tardas más de 5 minutos, ese cliente ya le escribió a tu competencia.\n\n### Herramientas que recomiendo:\n- **ManyChat** para DMs automáticos.\n- **Zapier** para conectar formularios con tu CRM.\n- **Make** para flujos complejos de facturación."
+    },
+    {
+      "id": 3,
+      "date": "02 NOV 2024",
+      "title": "Psicología de Ventas en DM",
+      "excerpt": "Scripts exactos para cerrar ventas por mensaje privado sin parecer desesperado.",
+      "content": "Vender por chat es un arte. El error más común es soltar el precio y la información completa apenas saludan.\n\nEso mata la conversación. En su lugar, debes actuar como un médico: diagnostica antes de recetar.\n\n**Pregunta clave:** '¿Qué es lo que te detiene ahora mismo de lograr X resultado?'\n\nCuando el cliente te da sus dolores, tu producto se convierte en la única medicina lógica."
+    }
+  ]
+}

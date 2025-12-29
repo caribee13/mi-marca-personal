@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULTRA SMM | Tu Nombre</title>
+    
+    <!-- Fuentes: Outfit (Moderna, geométrica, premium) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Librería para convertir Markdown (del CMS) a HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        /* --- CONFIGURACIÓN VISUAL BASE --- */
+        :root {
+            --bg-body: #050505;
+            --glass-card: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent-gradient: linear-gradient(135deg, #FF3BFF 0%, #ECBFBF 50%, #5C24FF 100%);
+            --accent-glow: #5C24FF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- FONDO ANIMADO (AURORA) --- */
+        .ambient-light {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            background: #050505;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: float 20s infinite alternate;
+        }
+
+        .orb-1 { width: 600px; height: 600px; background: #5C24FF; top: -100px; left: -100px; animation-duration: 25s; }
+        .orb-2 { width: 500px; height: 500px; background: #FF3BFF; bottom: 0; right: 0; animation-duration: 18s; }
+        .orb-3 { width: 300px; height: 300px; background: #00D1FF; top: 40%; left: 40%; opacity: 0.2; animation-duration: 30s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--glass-border), transparent);
+        }
+
+        /* --- HEADER --- */
+        header {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links { display: flex; gap: 30px; display: none; }
+        @media(min-width: 768px) { .nav-links { display: flex; } }
+
+        .nav-btn {
+            padding: 10px 24px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
+
+        /* --- HERO --- */
+        .hero {
+            padding: 60px 0 80px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(92, 36, 255, 0.15);
+            color: #bfa3ff;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid rgba(92, 36, 255, 0.3);
+        }
+
+        h1 {
+            font-size: 5rem;
+            line-height: 1;
+            font-weight: 900;
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #ffffff, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 50px;
+            font-weight: 300;
+        }
+
+        /* --- BENTO GRID SYSTEM --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 120px;
+        }
+
+        .bento-item {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(20px);
+            min-height: 280px;
+        }
+
+        .bento-item:hover {
+            transform: translateY(-5px) scale(1.01);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 2;
+        }
+
+        .col-span-1 { grid-column: span 1; }
+        .col-span-2 { grid-column: span 2; }
+        .row-span-2 { grid-row: span 2; min-height: 580px; }
+
+        .bento-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+        }
+
+        .bento-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
+        .bento-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* --- PERFIL CON EFECTO FUSIÓN (CUTOUT) --- */
+        .bento-profile {
+            padding: 0;
+            display: flex;
+            align-items: center; 
+            justify-content: flex-end; 
+            flex-direction: column;
+            background: radial-gradient(circle at center bottom, rgba(92, 36, 255, 0.2) 0%, rgba(255,255,255,0.02) 70%);
+        }
+
+        .profile-cutout {
+            width: 100%;
+            height: 90%; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-cutout img {
+            width: auto;
+            max-width: 90%;
+            height: 100%;
+            object-fit: contain; 
+            object-position: bottom;
+            transition: 0.5s;
+            filter: contrast(1.1) brightness(0.9) drop-shadow(0 0 20px rgba(92, 36, 255, 0.2));
+        }
+        
+        .profile-cutout::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            z-index: 2;
+        }
+
+        .bento-profile:hover .profile-cutout img {
+            transform: scale(1.03);
+            filter: contrast(1.2) brightness(1) drop-shadow(0 0 30px rgba(92, 36, 255, 0.5));
+        }
+
+        .profile-tag {
+            position: absolute;
+            top: 20px; left: 20px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 5;
+        }
+        .profile-tag p { font-weight: 700; font-size: 0.85rem; color: #fff; margin: 0;}
+
+        .stat-big {
+            font-size: 4rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- PORTFOLIO --- */
+        #portfolio { margin-bottom: 120px; }
+        
+        .project-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/9;
+            group: cursor;
+        }
+
+        .project-img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 0.5s; filter: grayscale(100%);
+        }
+
+        .project-card:hover .project-img { filter: grayscale(0%); transform: scale(1.05); }
+
+        .project-info {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px;
+            background: linear-gradient(to top, #000 0%, transparent 100%);
+            transform: translateY(20px); opacity: 0; transition: 0.3s;
+        }
+
+        .project-card:hover .project-info { transform: translateY(0); opacity: 1; }
+
+        /* --- BLOG CARDS --- */
+        .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+        .blog-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 20px;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .blog-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+        }
+
+        .blog-date { font-size: 0.8rem; color: var(--accent-glow); margin-bottom: 10px; display: block; font-weight: 600; }
+        .blog-card h3 { font-size: 1.2rem; margin-bottom: 10px; line-height: 1.3;}
+        .blog-card p { font-size: 0.9rem; color: var(--text-muted); }
+        .blog-read-more { font-size: 0.8rem; margin-top: 15px; color: #fff; font-weight: 600; display: inline-block; border-bottom: 1px solid var(--accent-glow); }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 2000;
+            display: none; justify-content: center; align-items: center; padding: 20px;
+        }
+
+        .modal-content {
+            background: #0a0a0a; border: 1px solid var(--glass-border);
+            width: 100%; max-width: 800px; max-height: 80vh;
+            border-radius: 20px; overflow-y: auto; padding: 40px; position: relative;
+            box-shadow: 0 0 50px rgba(92, 36, 255, 0.1);
+        }
+
+        .close-modal {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255,255,255,0.1); border: none; color: #fff;
+            width: 40px; height: 40px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2rem; transition: 0.3s;
+        }
+        .close-modal:hover { background: #ff3b3b; }
+
+        /* --- CTA FOOTER --- */
+        .cta-container {
+            text-align: center; padding: 100px 0;
+            border-top: 1px solid var(--glass-border); margin-top: 80px;
+        }
+        
+        .glow-btn {
+            position: relative; display: inline-block; padding: 18px 40px;
+            background: #fff; color: #000; font-weight: 800;
+            border-radius: 50px; font-size: 1.1rem; transition: 0.3s;
+        }
+        
+        .glow-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 255, 255, 0.4); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            h1 { font-size: 3.5rem; }
+            .bento-grid, .blog-grid { grid-template-columns: 1fr; gap: 20px; }
+            .bento-item { min-height: 250px; }
+            .col-span-2, .row-span-2, .col-span-4 { grid-column: span 1; grid-row: span 1; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fondo Animado -->
+    <div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">TU MARCA.</div>
+            <ul class="nav-links">
+                <li><a href="#services">Servicios</a></li>
+                <li><a href="#portfolio">Proyectos</a></li>
+                <li><a href="#blog">Journal</a></li>
+            </ul>
+            <!-- Enlace a WhatsApp -->
+            <a href="https://wa.me/XXXXXXXX" class="nav-btn">Hablemos</a>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero">
+            <span class="badge">DISPONIBLE PARA NUEVOS PROYECTOS</span>
+            <h1>ESCALA TU MARCA<br>SIN LÍMITES.</h1>
+            <p>Estrategia, Automatización y Contenido de Alto Impacto.</p>
+        </section>
+
+        <!-- BENTO GRID -->
+        <div id="services" class="bento-grid">
+            
+            <!-- 1. Perfil Principal (Con Efecto Fusión) -->
+            <div class="bento-item col-span-2 row-span-2 bento-profile">
+                <div class="profile-tag">
+                    <p>SMM & Strategist</p>
+                </div>
+                <div class="profile-cutout">
+                    <!-- FOTO DE MUESTRA PNG: Profesional recortado sin fondo -->
+                    <img src="https://freepngimg.com/thumb/business/7-2-business-man-png-15.png" alt="Perfil Recorte">
+                </div>
+            </div>
+
+            <!-- 2. Servicio: Automatización -->
+            <div class="bento-item col-span-1">
+                <div class="bento-icon"><i class="fa-solid fa-robot"></i></div>
+                <div>
+                    <h3 class="bento-title">Auto-Piloto</h3>
+                    <p class="bento-desc">Bots y flujos de trabajo que responden clientes 24/7.</p>
+                </div>
+            </div>
+
+            <!-- 3. Estadística -->
+            <div class="bento-item col-span-1" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);">
+                <div>
+                    <p class="bento-desc">Retorno Promedio</p>
+                    <div class="stat-big">4.5x</div>
+                    <p class="bento-desc">En Ads Invertidos</p>
+                </div>
+            </div>
+
+            <!-- 4. Servicio: Estrategia -->
+            <div class="bento-item col-span-2">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h3 class="bento-title">Growth Strategy</h3>
+                        <p class="bento-desc" style="max-width: 300px;">Analizo tu mercado, encuentro los huecos y ataco con contenido diseñado para vender, no para entretener.</p>
+                    </div>
+                    <div class="bento-icon"><i class="fa-solid fa-chess-knight"></i></div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- PORTFOLIO SECTION -->
+        <section id="portfolio">
+            <h2 class="section-title">PROYECTOS SELECTOS</h2>
+            <div class="bento-grid" style="margin-bottom: 0;">
+                <!-- Proyecto 1 -->
+                <div class="project-card col-span-2">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" class="project-img" alt="Proyecto 1">
+                    <div class="project-info">
+                        <h3>Fintech App Launch</h3>
+                        <p style="color: #ccc;">Estrategia de Lanzamiento & Ads</p>
+                    </div>
+                </div>
+                <!-- Proyecto 2 -->
+                <div class="project-card col-span-2">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop" class="project-img" alt="Proyecto 2">
+                    <div class="project-info">
+                        <h3>Moda Urbana B2C</h3>
+                        <p style="color: #ccc;">Reels Virales & Influencer Marketing</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOG SECTION (CARGA DINÁMICA) -->
+        <section id="blog">
+            <h2 class="section-title">JOURNAL / INSIGHTS</h2>
+            <div class="blog-grid" id="blog-container">
+                <p style="color: #666; padding: 20px;">Cargando artículos...</p>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <section class="cta-container">
+            <h2 style="font-size: 3rem; margin-bottom: 30px; font-weight: 800; letter-spacing: -2px;">¿EMPEZAMOS?</h2>
+            <p style="color: #888; margin-bottom: 40px;">Solo trabajo con 3 marcas al mes para garantizar calidad.</p>
+            <a href="https://wa.me/XXXXXXXX" class="glow-btn">AGENDAR LLAMADA</a>
+        </section>
+
+        <footer style="padding: 40px 0; text-align: center; color: var(--text-muted); border-top: 1px solid var(--glass-border); margin-top: 50px;">
+            <p>&copy; 2025 Tu Marca Personal.</p>
+        </footer>
+
+    </div>
+
+    <!-- MODAL DE LECTURA (OCULTO) -->
+    <div class="modal-overlay" id="blog-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-times"></i></button>
+            <span id="modal-date" style="color: var(--accent-glow); font-weight: bold; font-size: 0.9rem;"></span>
+            <h2 id="modal-title" style="font-size: 2rem; margin-top: 10px; margin-bottom: 20px;"></h2>
+            <div id="modal-body" style="line-height: 1.8; color: #ccc; font-size: 1.05rem;">
+                <!-- Contenido dinámico aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT: GESTIÓN DEL BLOG -->
+    <script>
+        // --- LOGICA DE CARGA DE ARTÍCULOS ---
+        async function loadPosts() {
+            try {
+                // 1. Intenta cargar desde archivo externo (para el futuro CMS)
+                const response = await fetch('blog.json');
+                if (!response.ok) throw new Error("No se encontró blog.json");
+                const data = await response.json();
+                renderBlog(data.posts);
+            } catch (error) {
+                // 2. Si falla (o no existe aún), usa estos DATOS DE RESPALDO (Modificables)
+                console.log("Usando modo local/respaldo para el blog");
+                const fallbackPosts = [
+                    {
+                        title: "El fin del alcance orgánico",
+                        date: "29 DIC 2024",
+                        excerpt: "Por qué tus posts ya no los ve nadie y cómo el formato 'Reel-Only' está cambiando las reglas.",
+                        content: `
+                            <p>Hace 5 años, publicabas una foto y el 20% de tus seguidores la veían. Hoy, con suerte llegas al 3%.</p>
+                            <p>No es culpa del algoritmo, es un cambio en el comportamiento del usuario. La gente ya no entra a Instagram a ver qué hacen sus amigos, entra a <strong>entretenerse</strong>.</p>
+                            <h3>¿La Solución?</h3>
+                            <p>Dejar de crear contenido "informativo" aburrido y empezar a crear contenido nativo de retención. Si no captas la atención en los primeros 2 segundos (el gancho), estás muerto digitalmente.</p>
+                        `
+                    },
+                    {
+                        title: "Automatiza o Muere",
+                        date: "15 DIC 2024",
+                        excerpt: "Herramientas No-Code que te ahorrarán 20 horas semanales de gestión manual.",
+                        content: `
+                            <p>Si sigues respondiendo "Precio al MD" manualmente en 2025, estás perdiendo dinero.</p>
+                            <p>La velocidad de respuesta es el factor #1 de conversión hoy en día.</p>
+                            <h3>Herramientas recomendadas:</h3>
+                            <ul>
+                                <li>- ManyChat para DMs</li>
+                                <li>- Zapier para CRMs</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Psicología de Ventas en DM",
+                        date: "02 NOV 2024",
+                        excerpt: "Scripts exactos para cerrar ventas por mensaje privado sin parecer desesperado.",
+                        content: "Vender por chat es un arte. El error más común es soltar el precio y la información completa apenas saludan. Diagnostica antes de recetar."
+                    }
+                ];
+                renderBlog(fallbackPosts);
+            }
+        }
+
+        // --- RENDERIZADO EN PANTALLA ---
+        function renderBlog(posts) {
+            const container = document.getElementById('blog-container');
+            container.innerHTML = ''; // Limpiar mensaje de carga
+
+            posts.forEach(post => {
+                const card = document.createElement('article');
+                card.className = 'blog-card';
+                card.onclick = () => openModal(post); // Click abre modal
+                
+                card.innerHTML = `
+                    <span class="blog-date">${post.date}</span>
+                    <h3>${post.title}</h3>
+                    <p>${post.excerpt}</p>
+                    <span class="blog-read-more">Leer artículo completo <i class="fa-solid fa-arrow-right" style="margin-left:5px;"></i></span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- GESTIÓN DEL MODAL ---
+        const modal = document.getElementById('blog-modal');
+        const mTitle = document.getElementById('modal-title');
+        const mDate = document.getElementById('modal-date');
+        const mBody = document.getElementById('modal-body');
+
+        function openModal(post) {
+            mTitle.textContent = post.title;
+            mDate.textContent = post.date;
+            // Si el CMS usa Markdown, 'marked.parse' lo convierte. Si es texto plano, lo muestra igual.
+            mBody.innerHTML = typeof marked !== 'undefined' ? marked.parse(post.content) : post.content;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Bloquear scroll fondo
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restaurar scroll
+        }
+
+        // Cerrar al dar click fuera
+        modal.onclick = function(e) {
+            if (e.target === modal) closeModal();
+        }
+
+        // Iniciar
+        loadPosts();
+    </script>
+
+</body>
+</html>
